@@ -4,10 +4,12 @@
  *
  * @format
  */
-
+import 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -24,6 +26,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Navigator from './src/navigation';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -56,19 +60,34 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 }
 
 function App(): React.JSX.Element {
+  const queryClient = new QueryClient();
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
+    flex: 1,
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  // const onLayoutRootView = useCallback(async () => {
+  //   if (appIsReady) {
+  //     SplashScreen.hide();
+  //   }
+  // }, [appIsReady]);
+  // if (!appIsReady) {
+  //   return null;
+  // } else {
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
+    <GestureHandlerRootView style={{flex: 1}}>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaView style={backgroundStyle}>
+          <StatusBar
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
+
+          <Navigator />
+          {/* <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <Header />
@@ -91,10 +110,13 @@ function App(): React.JSX.Element {
           </Section>
           <LearnMoreLinks />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </ScrollView> */}
+        </SafeAreaView>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
+// }
 
 const styles = StyleSheet.create({
   sectionContainer: {
