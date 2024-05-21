@@ -2,6 +2,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {StyleSheet} from 'react-native';
 import Dashboard from '../screens/dashboard';
 import MyTabBar from '../components/MyTabBar';
+import EmptyScreen from '../screens/others/EmptyScreen';
 
 export type RootBottomTabParamList = {
   Home: undefined;
@@ -26,7 +27,7 @@ export default function MyBottomTabs({}) {
       />
       <RootBottomTab.Screen
         name="Discover"
-        component={Dashboard}
+        component={EmptyScreen}
         options={{
           headerShown: false,
           tabBarShowLabel: false,
@@ -34,7 +35,7 @@ export default function MyBottomTabs({}) {
       />
       <RootBottomTab.Screen
         name="Add"
-        component={Dashboard}
+        component={EmptyScreen}
         options={{
           headerShown: false,
           tabBarShowLabel: false,
@@ -42,7 +43,7 @@ export default function MyBottomTabs({}) {
       />
       <RootBottomTab.Screen
         name="Inbox"
-        component={Dashboard}
+        component={EmptyScreen}
         options={{
           headerShown: false,
           tabBarShowLabel: false,
@@ -50,21 +51,12 @@ export default function MyBottomTabs({}) {
       />
       <RootBottomTab.Screen
         name="Me"
-        component={Dashboard}
+        component={EmptyScreen}
         options={{
           headerShown: false,
           tabBarShowLabel: false,
         }}
       />
-
-      {/* <RootBottomTab.Screen
-        name="UserCampaigns"
-        component={UserCampaigns}
-        options={{
-          headerShown: false,
-          tabBarShowLabel: false,
-        }}
-      /> */}
     </RootBottomTab.Navigator>
   );
 }

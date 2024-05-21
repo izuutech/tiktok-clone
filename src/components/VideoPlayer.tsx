@@ -14,11 +14,13 @@ import {
   View,
   ActivityIndicator,
   Dimensions,
+  Image,
 } from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useRoute} from '@react-navigation/native';
 
 import Video, {ResizeMode} from 'react-native-video';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {FlashList} from '@shopify/flash-list';
 
 export const VideoPlayer = forwardRef(
   (
@@ -29,10 +31,13 @@ export const VideoPlayer = forwardRef(
       heightWithOpenComment,
       thumbnail,
       video,
+      image,
       loader,
       setShowVideoTabs,
       postId,
-    }: Partial<any>,
+      index,
+      flashListRef,
+    }: {flashListRef: {current: FlashList<any> | null}} & Partial<any>,
     parentRef,
   ) => {
     const videoPlayerRef = useRef<any>(null);
@@ -89,7 +94,6 @@ export const VideoPlayer = forwardRef(
       useCallback(() => {
         const unsubscribe = () => {
           setPause(true);
-          setPause(true);
         };
 
         return () => unsubscribe();
@@ -109,6 +113,15 @@ export const VideoPlayer = forwardRef(
         setShowVideoTabs(true);
       }
     }, [pause]);
+    useEffect(() => {
+      setTimeout(() => {
+        flashListRef?.current?.scrollToIndex({
+          index: index + 1,
+          animated: true,
+        });
+      }, 10000);
+    }, []);
+
     return (
       <View
         style={[
@@ -123,7 +136,7 @@ export const VideoPlayer = forwardRef(
           styles.container,
           {backgroundColor: 'black'},
         ]}>
-        {pause === true && (
+        {video && pause === true && (
           <FontAwesome5
             name="play"
             size={50}
@@ -147,29 +160,68 @@ export const VideoPlayer = forwardRef(
             setPause(!pause);
             setOpenShare(false);
           }}>
-          <Video
-            style={{
-              width: '100%',
-              height: undefined,
-              aspectRatio: aspectRatio,
-            }}
-            resizeMode={ResizeMode.COVER}
-            ref={videoPlayerRef}
-            source={{uri: video}}
-            volume={1}
-            muted={false}
-            onLoad={({naturalSize}) => {
-              if (naturalSize && naturalSize.width && naturalSize.width > 0) {
-                setAspectRatio(naturalSize.width / naturalSize.height);
-              }
-              setReady(true);
-            }}
-            poster={thumbnail}
-            onError={e => console.log(e, 'error loggg video')}
-            repeat={true}
-            // paused={ready === false ? true : pause}
-            paused={pause}
-          />
+          {video ? (
+            <Video
+              style={{
+                width: '100%',
+                height: undefined,
+                aspectRatio: aspectRatio,
+              }}
+              resizeMode={ResizeMode.COVER}
+              ref={videoPlayerRef}
+              source={{uri: video}}
+              volume={1}
+              muted={false}
+              onLoad={({naturalSize}) => {
+                if (naturalSize && naturalSize.width && naturalSize.width > 0) {
+                  setAspectRatio(naturalSize.width / naturalSize.height);
+                }
+                setReady(true);
+              }}
+              onEnd={() => {
+                videoPlayerRef.current.seek(0);
+                flashListRef?.current?.scrollToIndex({
+                  index: index + 1,
+                  animated: true,
+                });
+              }}
+              poster={thumbnail}
+              onError={e => console.log(e, 'error loggg video')}
+              repeat={false}
+              // paused={ready === false ? true : pause}
+              paused={pause}
+            />
+          ) : (
+            <Image
+              style={{
+                width: '100%',
+                height: undefined,
+                aspectRatio: aspectRatio,
+              }}
+              onLoad={({nativeEvent}) => {
+                if (
+                  nativeEvent.source &&
+                  nativeEvent.source.width &&
+                  nativeEvent.source.width > 0
+                ) {
+                  setAspectRatio(
+                    nativeEvent.source.width / nativeEvent.source.height,
+                  );
+                }
+                setReady(true);
+              }}
+              onLoadEnd={() => {
+                console.log('endedd');
+                // setTimeout(() => {
+                //   flashListRef?.current?.scrollToIndex({
+                //     index: index + 1,
+                //     animated: true,
+                //   });
+                // }, 10000);
+              }}
+              source={{uri: image}}
+            />
+          )}
         </TouchableHighlight>
       </View>
     );

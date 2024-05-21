@@ -101,7 +101,7 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
                     </View>
                   ) : (
                     <View style={styles.menubox}>
-                      <Entypo name="home" size={24} color="white" />
+                      <Ionicons name="person" size={24} color="white" />
                       <Text style={styles.menutxt}>{label}</Text>
                     </View>
                   )}

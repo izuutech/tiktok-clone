@@ -1,4 +1,4 @@
-import {StyleSheet, View, Dimensions} from 'react-native';
+import {StyleSheet, View, Dimensions, useWindowDimensions} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
 import VideoPlayer from '../../components/VideoPlayer';
@@ -7,6 +7,9 @@ import {useState} from 'react';
 import {useQuery} from 'react-query';
 import {IVideo} from '../../types/video';
 import PostDetails from '../../components/PostDetails';
+import MusicDetails from '../../components/MusicDetails';
+import {TabBarIndicator} from 'react-native-tab-view';
+import {FlashList} from '@shopify/flash-list';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -21,6 +24,8 @@ export default function DashboardView({
   video,
   setOpenShare,
   openShare,
+  flashListRef,
+  image,
 }: Partial<{
   mediaRefs: any;
   item: IVideo;
@@ -30,20 +35,13 @@ export default function DashboardView({
   openComments: boolean;
   setOpenComments: any;
   video: string;
+  image: string;
   setOpenShare: any;
   openShare: boolean;
+  flashListRef: FlashList<any> | null;
 }>) {
+  const layout = useWindowDimensions();
   const [openModal, setOpenModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const fetchPost = async (j: any) => {};
-  const {
-    isLoading,
-    data: singlePost,
-    refetch: refetchSinglePost,
-  }: any = useQuery('single_post' + item?.id, async () => {
-    return await fetchPost(item?.id);
-  });
 
   return (
     <View style={styles.container}>
@@ -55,18 +53,8 @@ export default function DashboardView({
           openModal={openModal}
           openComments={openComments}
           setOpenComments={setOpenComments}
-          // canOpenComment={false}
-          challenge={singlePost?.data?.challenge}
-          post={{
-            ...singlePost?.data?.user,
-            _id: item?.id,
-            voters: singlePost?.data?.post?.voters,
-            singlePost: singlePost?.data?.post,
-          }}
-          // commentCount={comments.length}
           commentCount={item?.comments || 0}
-          queryKey={'user_data' + singlePost?.data?.user?.userId}
-          refetchPost={refetchSinglePost} //instead of fetching single post I'm refetching entire list
+          likes={item?.likes || 0}
         />
       )}
       <VideoPlayer
@@ -75,12 +63,16 @@ export default function DashboardView({
         showVideoTabs={showVideoTabs}
         setShowVideoTabs={setShowVideoTabs}
         video={video}
+        image={image}
         thumbnail={item?.thumbnailUrl}
         postId={item?.id}
+        flashListRef={flashListRef}
+        index={index}
         ref={(VideoSingleRef: any) =>
           (mediaRefs.current[index as number] = VideoSingleRef)
         }
       />
+      <MusicDetails />
       {showVideoTabs && !openComments && <PostDetails post={item as IVideo} />}
     </View>
   );
