@@ -21,22 +21,21 @@ import {useFocusEffect, useRoute} from '@react-navigation/native';
 import Video, {ResizeMode} from 'react-native-video';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {FlashList} from '@shopify/flash-list';
+import RouteContext from '../contexts/routecontext';
 
 export const VideoPlayer = forwardRef(
   (
     {
-      openComments,
-      height,
-      heightWithOpenComment,
       thumbnail,
       video,
       image,
       loader,
-      setShowVideoTabs,
       flashListRef,
     }: {flashListRef: {current: FlashList<any> | null}} & Partial<any>,
     parentRef,
   ) => {
+    const {toggle} = useContext(RouteContext);
+
     const videoPlayerRef = useRef<any>(null);
     const imageRef = useRef<any>(null);
     const [pause, setPause] = useState(true);
@@ -44,7 +43,6 @@ export const VideoPlayer = forwardRef(
     const [arrLength, setArrLength] = useState(0);
     const [ready, setReady] = useState(false);
     const [aspectRatio, setAspectRatio] = useState(1);
-    const palette: any = {};
 
     useImperativeHandle(parentRef, () => ({
       playVideo,
@@ -122,28 +120,14 @@ export const VideoPlayer = forwardRef(
     );
 
     useEffect(() => {
-      const timeout = setTimeout(() => {
-        if (pause === false) {
-          setShowVideoTabs(false);
-        }
-      }, 3000);
-      return () => clearTimeout(timeout);
-    }, [pause]);
-    useEffect(() => {
-      if (pause === true) {
-        setShowVideoTabs(true);
-      }
-    }, [pause]);
+      pauseVideo();
+    }, [toggle]);
 
     return (
       <View
         style={[
           {
-            height: openComments
-              ? heightWithOpenComment
-                ? heightWithOpenComment
-                : '35%'
-              : height || '100%',
+            height: '100%',
             width: '100%',
           },
           styles.container,
@@ -187,7 +171,6 @@ export const VideoPlayer = forwardRef(
               }}
               onEnd={() => {
                 videoPlayerRef.current.seek(0);
-                console.log(viewableIndex + 1, arrLength, 'kll');
                 if (viewableIndex < arrLength) {
                   flashListRef?.current?.scrollToIndex({
                     index: viewableIndex + 1,

@@ -7,15 +7,18 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import {useState} from 'react';
 import useToast from '../hooks/useToast';
+import {IVideo} from '../types/video';
 
 const avatarPlaceholder = require('../assets/avatarPlaceholder.png');
 
 export default function LikeBox({
   likes,
+  item,
   commentCount,
 }: Partial<{
   likes: number;
   commentCount: number;
+  item: IVideo;
 }>) {
   const palette: any = {};
   const toast = useToast();
@@ -55,7 +58,7 @@ export default function LikeBox({
           ]}
           onPress={() => {}}>
           <Image
-            source={avatarPlaceholder}
+            source={{uri: item?.profilePhotoUrl}}
             onLoad={() => setAvatarLoaded(true)}
             style={styles.userIcon}
           />

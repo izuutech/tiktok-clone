@@ -12,7 +12,7 @@ import {
 import {useFocusEffect} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
 
-import {useContext, useState, useCallback, useRef, useEffect} from 'react';
+import React, {useState, useCallback, useRef, useEffect} from 'react';
 
 import {useQuery} from 'react-query';
 import DashboardView from './DashboardView';
@@ -22,30 +22,19 @@ import {IVideo} from '../../types/video';
 
 const windowHeight = Dimensions.get('window').height;
 
-export default function Following({navigation, route}: Partial<any>) {
+function Following({jumpTo, route}: Partial<any>) {
   const palette: any = {};
   const mediaRefs = useRef([]);
   const flashListRef = useRef<any>(null);
   const [showVideoTabs, setShowVideoTabs] = useState(true);
-  const [fetchMore, setFetchMore] = useState(true);
-  const [pagination, setPagination] = useState({page: 1, limit: 4});
   const [videoList, setVideoList] = useState<IVideo[]>([]);
-  const [openComments, setOpenComments] = useState(false);
 
-  const {isFetching, isLoading, isRefetching, refetch} = useQuery(
+  const {refetch} = useQuery(
     `following`,
     () => httpService.get(`${URLS.FOLLOWING}`),
     {
       onSuccess: res => {
-        const arr = res.data.map((item: IVideo) => ({
-          ...item,
-          videoUrl:
-            item.type === 'video'
-              ? 'https://videos.pexels.com/video-files/3209829/3209829-uhd_3840_2160_25fps.mp4'
-              : item.videoUrl,
-        }));
-        setVideoList([...arr]);
-        // setVideoList([...res.data]);
+        setVideoList([...res.data]);
       },
     },
   );
@@ -69,16 +58,6 @@ export default function Following({navigation, route}: Partial<any>) {
       }
     });
   });
-
-  useEffect(() => {
-    setFetchMore(false);
-  }, []);
-
-  useEffect(() => {
-    if (fetchMore === true) {
-      refetch();
-    }
-  }, [pagination]);
 
   useFocusEffect(
     useCallback(() => {
@@ -107,32 +86,19 @@ export default function Following({navigation, route}: Partial<any>) {
           onViewableItemsChanged={onViewableItemsChanged.current}
           keyExtractor={(item, index) => item.id}
           decelerationRate={'normal'}
-          onEndReached={() => {
-            if (!isFetching && !isRefetching && !isLoading) {
-              setPagination(prev => ({
-                ...pagination,
-                page: (prev.page += 1),
-              }));
-            }
-          }}
-          onEndReachedThreshold={0.1}
-          onScrollBeginDrag={() => {
-            setFetchMore(true);
-          }}
           renderItem={({item, index}) => (
             <DashboardView
               item={item}
-              active={'following'}
               index={index}
               key={item.id}
               mediaRefs={mediaRefs}
               showVideoTabs={showVideoTabs}
               setShowVideoTabs={setShowVideoTabs}
               flashListRef={flashListRef as any}
-              openComments={openComments}
-              setOpenComments={setOpenComments}
-              video={item.videoUrl}
-              image={item.imageUrl}
+              video={item.media.videoUrl}
+              image={item.media.imageUrl}
+              route={route}
+              jumpTo={jumpTo}
             />
           )}
         />
@@ -184,3 +150,5 @@ const styles = StyleSheet.create({
     left: '45%',
   },
 });
+
+export default React.memo(Following);

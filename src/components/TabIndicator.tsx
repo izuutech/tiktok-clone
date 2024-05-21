@@ -1,25 +1,41 @@
 import {useRoute} from '@react-navigation/native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import RouteContext from '../contexts/routecontext';
 
-export default function TabIndicator({active}: {active: 'fyp' | 'following'}) {
-  const route = useRoute();
+// export default function TabIndicator({active}: {active: 'fyp' | 'following'}) {
+export default function TabIndicator({
+  route,
+  jumpTo,
+}: {
+  route: {key: string; title: string};
+  jumpTo: (key: string) => void;
+}) {
+  const {setToggle} = useContext(RouteContext);
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          setToggle((prev: boolean) => !prev);
+          jumpTo('following');
+        }}>
         <Text
           style={[
             styles.text,
-            {color: active === 'following' ? 'white' : '#ffffff60'},
+            {color: route.key === 'following' ? 'white' : '#ffffff60'},
           ]}>
           Following
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          setToggle((prev: boolean) => !prev);
+          jumpTo('fyp');
+        }}>
         <Text
           style={[
             styles.text,
-            {color: active === 'fyp' ? 'white' : '#ffffff80'},
+            {color: route.key === 'fyp' ? 'white' : '#ffffff80'},
           ]}>
           For You
         </Text>
@@ -34,6 +50,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 10,
     width: '100%',
+    height: 100,
     justifyContent: 'center',
     paddingVertical: 30,
     top: 50,

@@ -1,14 +1,9 @@
 import * as React from 'react';
-import {Text, View, useWindowDimensions} from 'react-native';
-import {
-  TabView,
-  SceneMap,
-  TabBar,
-  SceneRendererProps,
-  NavigationState,
-} from 'react-native-tab-view';
+import {Text, useWindowDimensions, View} from 'react-native';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import Following from './Following';
 import Fyp from './FYP';
+import RouteContext from '../../contexts/routecontext';
 
 const renderScene = SceneMap({
   following: Following,
@@ -17,6 +12,7 @@ const renderScene = SceneMap({
 
 export default function Dashboard() {
   const layout = useWindowDimensions();
+  const {setToggle} = React.useContext(RouteContext);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -53,6 +49,7 @@ export default function Dashboard() {
       renderTabBar={renderTabBar}
       onIndexChange={setIndex}
       initialLayout={{width: layout.width}}
+      onSwipeEnd={() => setToggle((prev: boolean) => !prev)}
     />
   );
 }

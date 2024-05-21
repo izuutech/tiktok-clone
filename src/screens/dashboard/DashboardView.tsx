@@ -1,5 +1,4 @@
 import {StyleSheet, View, Dimensions} from 'react-native';
-import {useRoute} from '@react-navigation/native';
 
 import VideoPlayer from '../../components/VideoPlayer';
 import LikeBox from '../../components/LikeBox';
@@ -12,50 +11,71 @@ import TabIndicator from '../../components/TabIndicator';
 const windowHeight = Dimensions.get('window').height;
 
 export default function DashboardView({
-  active,
   mediaRefs,
   item,
   index,
   showVideoTabs,
   setShowVideoTabs,
-  openComments,
-  setOpenComments,
   video,
   flashListRef,
   image,
-}: {active: 'fyp' | 'following'} & Partial<{
+  route,
+  jumpTo,
+}: {
+  route: {key: string; title: string};
+  jumpTo: (key: string) => void;
+} & Partial<{
   mediaRefs: any;
   item: IVideo;
   index: number;
   showVideoTabs: boolean;
   setShowVideoTabs: any;
-  openComments: boolean;
-  setOpenComments: any;
   video: string;
   image: string;
   flashListRef: FlashList<any> | null;
 }>) {
   return (
     <View style={styles.container}>
-      <TabIndicator active={active} />
-      {showVideoTabs && !openComments && (
-        <LikeBox commentCount={item?.comments || 0} likes={item?.likes || 0} />
+      <TabIndicator route={route} jumpTo={jumpTo} />
+      {showVideoTabs && (
+        <LikeBox
+          item={item}
+          commentCount={item?.comments || 0}
+          likes={item?.likes || 0}
+        />
       )}
-      <VideoPlayer
-        openComments={openComments}
-        showVideoTabs={showVideoTabs}
-        setShowVideoTabs={setShowVideoTabs}
-        video={video}
-        image={image}
-        thumbnail={item?.thumbnailUrl}
-        postId={item?.id}
-        flashListRef={flashListRef}
-        index={index}
-        ref={(VideoSingleRef: any) =>
-          (mediaRefs.current[index as number] = VideoSingleRef)
-        }
-      />
-      {showVideoTabs && !openComments && <PostDetails post={item as IVideo} />}
+      {route.key === 'following' ? (
+        <VideoPlayer
+          showVideoTabs={showVideoTabs}
+          setShowVideoTabs={setShowVideoTabs}
+          route={route}
+          video={video?.replace('http://', 'https://')}
+          image={image?.replace('http://', 'https://')}
+          thumbnail={item?.media.previewUrl}
+          postId={item?.id}
+          flashListRef={flashListRef}
+          index={index}
+          ref={(VideoSingleRef: any) =>
+            (mediaRefs.current[index as number] = VideoSingleRef)
+          }
+        />
+      ) : (
+        <VideoPlayer
+          showVideoTabs={showVideoTabs}
+          setShowVideoTabs={setShowVideoTabs}
+          route={route}
+          video={video?.replace('http://', 'https://')}
+          image={image?.replace('http://', 'https://')}
+          thumbnail={item?.media.previewUrl}
+          postId={item?.id}
+          flashListRef={flashListRef}
+          index={index}
+          ref={(VideoSingleRef: any) =>
+            (mediaRefs.current[index as number] = VideoSingleRef)
+          }
+        />
+      )}
+      {showVideoTabs && <PostDetails post={item as IVideo} />}
       <MusicDetails />
     </View>
   );

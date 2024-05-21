@@ -5,14 +5,11 @@ import {
   ActivityIndicator,
   Platform,
   KeyboardAvoidingView,
-  Alert,
-  FlatList,
-  Text,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
 
-import {useContext, useState, useCallback, useRef, useEffect} from 'react';
+import React, {useState, useCallback, useRef, useEffect} from 'react';
 
 import {useQuery} from 'react-query';
 import DashboardView from './DashboardView';
@@ -21,7 +18,7 @@ import {URLS} from '../../apis/urls';
 import {IVideo} from '../../types/video';
 
 const windowHeight = Dimensions.get('window').height;
-export default function Fyp({navigation, route}: Partial<any>) {
+function Fyp({jumpTo, route}: Partial<any>) {
   const palette: any = {};
   const mediaRefs = useRef([]);
   const flashListRef = useRef<any>(null);
@@ -29,22 +26,17 @@ export default function Fyp({navigation, route}: Partial<any>) {
   const [fetchMore, setFetchMore] = useState(true);
   const [pagination, setPagination] = useState({page: 1, limit: 4});
   const [videoList, setVideoList] = useState<IVideo[]>([]);
-  const [openComments, setOpenComments] = useState(false);
+
+  useEffect(() => {
+    console.log(route, 'kk');
+  }, [route]);
 
   const {isFetching, isLoading, isRefetching, refetch} = useQuery(
     `fyp`,
     () => httpService.get(`${URLS.FYP}`),
     {
       onSuccess: res => {
-        const arr = res.data.map((item: IVideo) => ({
-          ...item,
-          videoUrl:
-            item.type === 'video'
-              ? 'https://videos.pexels.com/video-files/3209829/3209829-uhd_3840_2160_25fps.mp4'
-              : item.videoUrl,
-        }));
-        setVideoList([...arr]);
-        // setVideoList([...res.data]);
+        setVideoList([...res.data]);
       },
     },
   );
@@ -120,17 +112,16 @@ export default function Fyp({navigation, route}: Partial<any>) {
           renderItem={({item, index}) => (
             <DashboardView
               item={item}
-              active={'fyp'}
               index={index}
               key={item.id}
               mediaRefs={mediaRefs}
               showVideoTabs={showVideoTabs}
               setShowVideoTabs={setShowVideoTabs}
               flashListRef={flashListRef as any}
-              openComments={openComments}
-              setOpenComments={setOpenComments}
-              video={item.videoUrl}
-              image={item.imageUrl}
+              video={item.media.videoUrl}
+              image={item.media.imageUrl}
+              route={route}
+              jumpTo={jumpTo}
             />
           )}
         />
@@ -182,3 +173,5 @@ const styles = StyleSheet.create({
     left: '45%',
   },
 });
+
+export default React.memo(Fyp);

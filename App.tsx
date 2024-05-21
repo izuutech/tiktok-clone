@@ -22,6 +22,7 @@ import Navigator from './src/navigation';
 import {QueryClient, QueryClientProvider} from 'react-query';
 
 import {ToastProvider} from 'react-native-toast-notifications';
+import RouteContext, {RouteContextProvider} from './src/contexts/routecontext';
 
 function App(): React.JSX.Element {
   const queryClient = new QueryClient();
@@ -34,65 +35,67 @@ function App(): React.JSX.Element {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-      <QueryClientProvider client={queryClient}>
-        <SafeAreaView edges={['top']} style={backgroundStyle}>
-          <ToastProvider
-            placement="top"
-            renderType={{
-              my_success: toast => {
-                const message = toast.data.message;
-                const title = toast.data.title;
-                return (
-                  <View
-                    style={{
-                      padding: 15,
-                      backgroundColor: '#E6F6EA',
-                      borderWidth: 1,
-                      borderColor: '#99D9A9',
-                      width: '90%',
-                      borderRadius: 10,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
+      <RouteContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <SafeAreaView edges={['top']} style={backgroundStyle}>
+            <ToastProvider
+              placement="top"
+              renderType={{
+                my_success: toast => {
+                  const message = toast.data.message;
+                  const title = toast.data.title;
+                  return (
                     <View
                       style={{
-                        width: 35,
-                        height: 35,
-                        backgroundColor: '#C1F1CD',
-                        borderRadius: 20,
-                        marginRight: 5,
-                        overflow: 'hidden',
-                        justifyContent: 'center',
+                        padding: 15,
+                        backgroundColor: '#E6F6EA',
+                        borderWidth: 1,
+                        borderColor: '#99D9A9',
+                        width: '90%',
+                        borderRadius: 10,
+                        flexDirection: 'row',
                         alignItems: 'center',
                       }}>
-                      <Image
-                        source={{uri: 'https://picsum.photos/400'}}
-                        width={20}
-                        height={20}
-                      />
-                    </View>
-                    <View style={{width: '80%'}}>
-                      <Text
+                      <View
                         style={{
-                          color: '#06A22D',
-                          fontWeight: 'bold',
+                          width: 35,
+                          height: 35,
+                          backgroundColor: '#C1F1CD',
+                          borderRadius: 20,
+                          marginRight: 5,
+                          overflow: 'hidden',
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}>
-                        {title}
-                      </Text>
-                      <Text style={{color: '#30B251'}}>{message}</Text>
+                        <Image
+                          source={{uri: 'https://picsum.photos/400'}}
+                          width={20}
+                          height={20}
+                        />
+                      </View>
+                      <View style={{width: '80%'}}>
+                        <Text
+                          style={{
+                            color: '#06A22D',
+                            fontWeight: 'bold',
+                          }}>
+                          {title}
+                        </Text>
+                        <Text style={{color: '#30B251'}}>{message}</Text>
+                      </View>
                     </View>
-                  </View>
-                );
-              },
-            }}>
-            <StatusBar
-              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-              backgroundColor={backgroundStyle.backgroundColor}
-            />
-            <Navigator />
-          </ToastProvider>
-        </SafeAreaView>
-      </QueryClientProvider>
+                  );
+                },
+              }}>
+              <StatusBar
+                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+                backgroundColor={backgroundStyle.backgroundColor}
+              />
+              <Navigator />
+            </ToastProvider>
+          </SafeAreaView>
+        </QueryClientProvider>
+      </RouteContextProvider>
     </GestureHandlerRootView>
   );
 }

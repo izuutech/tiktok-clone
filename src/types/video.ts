@@ -3,11 +3,15 @@ export interface IVideo {
   username: string;
   type: 'video';
   caption: string;
-  videoUrl: string;
-  imageUrl: string;
-  thumbnailUrl: string;
   likes: number;
   comments: number;
   shares: number;
   timestamp: Date;
+  media: {
+    type: 'video' | 'image';
+    videoUrl: string;
+    imageUrl: string;
+    previewUrl: string;
+  };
+  profilePhotoUrl: string;
 }
