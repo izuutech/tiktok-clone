@@ -37,7 +37,7 @@ export default function Dashboard() {
       }}
       style={{
         backgroundColor: '#ffffff00',
-        position: 'absolute',
+        // position: 'absolute',
         display: 'none',
         zIndex: 10,
         top: 70,

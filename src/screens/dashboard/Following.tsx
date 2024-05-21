@@ -22,35 +22,30 @@ import {IVideo} from '../../types/video';
 
 const windowHeight = Dimensions.get('window').height;
 
-const fetchAllPostsSecondEndPoint = async (j: any) => {
-  return;
-};
-const fetchPost = async (j: any) => {
-  return;
-};
-const getChallengeByShortCode = async (j: any) => {
-  return;
-};
 export default function Following({navigation, route}: Partial<any>) {
   const palette: any = {};
   const mediaRefs = useRef([]);
-  const flatListRef = useRef(null);
+  const flashListRef = useRef<any>(null);
   const [showVideoTabs, setShowVideoTabs] = useState(true);
   const [fetchMore, setFetchMore] = useState(true);
   const [pagination, setPagination] = useState({page: 1, limit: 4});
   const [videoList, setVideoList] = useState<IVideo[]>([]);
   const [openComments, setOpenComments] = useState(false);
-  const [commentId, setCommentId] = useState('');
-  const [openShare, setOpenShare] = useState(false);
-  const flashListRef = useRef<any>(null);
 
   const {isFetching, isLoading, isRefetching, refetch} = useQuery(
     `following`,
     () => httpService.get(`${URLS.FOLLOWING}`),
     {
       onSuccess: res => {
-        setVideoList([...res.data]);
-        console.log(res.data, 'resppp');
+        const arr = res.data.map((item: IVideo) => ({
+          ...item,
+          videoUrl:
+            item.type === 'video'
+              ? 'https://videos.pexels.com/video-files/3209829/3209829-uhd_3840_2160_25fps.mp4'
+              : item.videoUrl,
+        }));
+        setVideoList([...arr]);
+        // setVideoList([...res.data]);
       },
     },
   );
@@ -60,11 +55,14 @@ export default function Following({navigation, route}: Partial<any>) {
     changed.forEach((el: any) => {
       const cell: any = mediaRefs.current[el.index];
       if (cell) {
-        setOpenShare(false);
         // console.log(el, el.isViewable, 'bbbbbbelllll');
         if (el.isViewable) {
-          cell.playVideo();
-          cell.setPostId(setCommentId);
+          cell.callViewableIndex(el?.index);
+          if (el?.item.type === 'image') {
+            cell.startCountdown(el?.index, mediaRefs.current.length);
+            return;
+          }
+          cell.playVideo(el?.index, mediaRefs.current.length);
         } else {
           cell.pauseVideo();
         }
@@ -97,7 +95,7 @@ export default function Following({navigation, route}: Partial<any>) {
     <KeyboardAvoidingView behavior={'position'}>
       <View style={[styles.container, {backgroundColor: palette.surface}]}>
         <FlashList
-          ref={flatListRef}
+          ref={flashListRef}
           // data={dummyVideos}
           data={videoList}
           pagingEnabled={true}
@@ -135,8 +133,6 @@ export default function Following({navigation, route}: Partial<any>) {
               setOpenComments={setOpenComments}
               video={item.videoUrl}
               image={item.imageUrl}
-              openShare={openShare}
-              setOpenShare={setOpenShare}
             />
           )}
         />

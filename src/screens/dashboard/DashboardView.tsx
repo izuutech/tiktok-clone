@@ -21,8 +21,6 @@ export default function DashboardView({
   openComments,
   setOpenComments,
   video,
-  setOpenShare,
-  openShare,
   flashListRef,
   image,
 }: {active: 'fyp' | 'following'} & Partial<{
@@ -35,26 +33,15 @@ export default function DashboardView({
   setOpenComments: any;
   video: string;
   image: string;
-  setOpenShare: any;
-  openShare: boolean;
   flashListRef: FlashList<any> | null;
 }>) {
-  const route = useRoute();
-
   return (
     <View style={styles.container}>
       <TabIndicator active={active} />
       {showVideoTabs && !openComments && (
-        <LikeBox
-          setOpenShare={setOpenShare}
-          openComments={openComments}
-          setOpenComments={setOpenComments}
-          commentCount={item?.comments || 0}
-          likes={item?.likes || 0}
-        />
+        <LikeBox commentCount={item?.comments || 0} likes={item?.likes || 0} />
       )}
       <VideoPlayer
-        setOpenShare={setOpenShare}
         openComments={openComments}
         showVideoTabs={showVideoTabs}
         setShowVideoTabs={setShowVideoTabs}

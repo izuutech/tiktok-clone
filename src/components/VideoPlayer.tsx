@@ -25,7 +25,6 @@ import {FlashList} from '@shopify/flash-list';
 export const VideoPlayer = forwardRef(
   (
     {
-      setOpenShare,
       openComments,
       height,
       heightWithOpenComment,
@@ -34,40 +33,62 @@ export const VideoPlayer = forwardRef(
       image,
       loader,
       setShowVideoTabs,
-      postId,
-      index,
       flashListRef,
     }: {flashListRef: {current: FlashList<any> | null}} & Partial<any>,
     parentRef,
   ) => {
     const videoPlayerRef = useRef<any>(null);
+    const imageRef = useRef<any>(null);
     const [pause, setPause] = useState(true);
+    const [viewableIndex, setViewableIndex] = useState(0);
+    const [arrLength, setArrLength] = useState(0);
     const [ready, setReady] = useState(false);
     const [aspectRatio, setAspectRatio] = useState(1);
     const palette: any = {};
 
     useImperativeHandle(parentRef, () => ({
       playVideo,
+      startCountdown,
+      callViewableIndex,
       pauseVideo,
       unload,
-      setPostId,
     }));
 
-    const playVideo = () => {
+    const playVideo = (currentViewableIndex: number, length: number) => {
       if (videoPlayerRef.current == null) {
         return;
       }
       if (pause === false) {
         return;
       }
+      setViewableIndex(currentViewableIndex);
+      setArrLength(length);
       setPause(false);
     };
 
-    const setPostId = (funcToSet: any) => {
+    const callViewableIndex = (index: number) => {
       if (videoPlayerRef.current == null) {
         return;
       }
-      funcToSet(postId);
+      setViewableIndex(index);
+    };
+
+    const startCountdown = (currentViewableIndex: number, length: number) => {
+      if (imageRef.current == null) {
+        return;
+      }
+
+      const newIndex = currentViewableIndex + 1;
+      setViewableIndex(currentViewableIndex);
+      setArrLength(length);
+      setTimeout(() => {
+        if (currentViewableIndex < length) {
+          flashListRef?.current?.scrollToIndex({
+            index: newIndex,
+            animated: true,
+          });
+        }
+      }, 10000);
     };
 
     const pauseVideo = () => {
@@ -113,14 +134,6 @@ export const VideoPlayer = forwardRef(
         setShowVideoTabs(true);
       }
     }, [pause]);
-    useEffect(() => {
-      setTimeout(() => {
-        flashListRef?.current?.scrollToIndex({
-          index: index + 1,
-          animated: true,
-        });
-      }, 10000);
-    }, []);
 
     return (
       <View
@@ -143,22 +156,16 @@ export const VideoPlayer = forwardRef(
             color={'white'}
             onPress={() => {
               setPause(!pause);
-              setOpenShare(false);
             }}
             style={styles.play}
           />
         )}
-        {(loader || ready === false) && (
-          <ActivityIndicator
-            style={styles.loader}
-            color={palette.primary}
-            size={50}
-          />
+        {video && (loader || ready === false) && (
+          <ActivityIndicator style={styles.loader} color={'yellow'} size={50} />
         )}
         <TouchableHighlight
           onPress={() => {
             setPause(!pause);
-            setOpenShare(false);
           }}>
           {video ? (
             <Video
@@ -180,24 +187,29 @@ export const VideoPlayer = forwardRef(
               }}
               onEnd={() => {
                 videoPlayerRef.current.seek(0);
-                flashListRef?.current?.scrollToIndex({
-                  index: index + 1,
-                  animated: true,
-                });
+                console.log(viewableIndex + 1, arrLength, 'kll');
+                if (viewableIndex < arrLength) {
+                  flashListRef?.current?.scrollToIndex({
+                    index: viewableIndex + 1,
+                    animated: true,
+                  });
+                }
               }}
               poster={thumbnail}
-              onError={e => console.log(e, 'error loggg video')}
-              repeat={false}
+              onError={e => console.log('e', 'error loggg video')}
+              repeat={true}
               // paused={ready === false ? true : pause}
               paused={pause}
             />
           ) : (
             <Image
+              ref={imageRef}
               style={{
                 width: '100%',
                 height: undefined,
                 aspectRatio: aspectRatio,
               }}
+              resizeMode="cover"
               onLoad={({nativeEvent}) => {
                 if (
                   nativeEvent.source &&
@@ -209,15 +221,6 @@ export const VideoPlayer = forwardRef(
                   );
                 }
                 setReady(true);
-              }}
-              onLoadEnd={() => {
-                console.log('endedd');
-                // setTimeout(() => {
-                //   flashListRef?.current?.scrollToIndex({
-                //     index: index + 1,
-                //     animated: true,
-                //   });
-                // }, 10000);
               }}
               source={{uri: image}}
             />

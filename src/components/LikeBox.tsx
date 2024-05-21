@@ -11,18 +11,10 @@ import useToast from '../hooks/useToast';
 const avatarPlaceholder = require('../assets/avatarPlaceholder.png');
 
 export default function LikeBox({
-  setOpenShare,
   likes,
-  setOpenComments,
-  openComments,
-  canOpenComment,
   commentCount,
 }: Partial<{
-  setOpenShare: any;
   likes: number;
-  setOpenComments: any;
-  openComments: boolean;
-  canOpenComment: boolean;
   commentCount: number;
 }>) {
   const palette: any = {};
@@ -109,13 +101,9 @@ export default function LikeBox({
         />
         <Text style={[styles.text, {color: 'white'}]}>{commentCount}</Text>
       </TouchableOpacity>
-      <View style={styles.box}>
-        <Entypo
-          name="forward"
-          size={35}
-          color={'white'}
-          onPress={() => setOpenShare((prev: boolean) => !prev)}
-        />
+      <View style={styles.boxWithText}>
+        <Entypo name="forward" size={35} color={'white'} />
+        <Text style={[styles.text, {color: 'white'}]}>Share</Text>
       </View>
     </View>
   );
@@ -154,7 +142,7 @@ const styles = StyleSheet.create({
     left: 14,
   },
   boxWithText: {
-    marginTop: 5,
+    marginTop: 10,
     height: 46,
     width: 46,
     flexDirection: 'column',

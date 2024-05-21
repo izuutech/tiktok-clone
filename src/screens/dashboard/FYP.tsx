@@ -30,16 +30,21 @@ export default function Fyp({navigation, route}: Partial<any>) {
   const [pagination, setPagination] = useState({page: 1, limit: 4});
   const [videoList, setVideoList] = useState<IVideo[]>([]);
   const [openComments, setOpenComments] = useState(false);
-  const [commentId, setCommentId] = useState('');
-  const [openShare, setOpenShare] = useState(false);
 
   const {isFetching, isLoading, isRefetching, refetch} = useQuery(
     `fyp`,
     () => httpService.get(`${URLS.FYP}`),
     {
       onSuccess: res => {
-        setVideoList([...res.data]);
-        console.log(res.data, 'resppp');
+        const arr = res.data.map((item: IVideo) => ({
+          ...item,
+          videoUrl:
+            item.type === 'video'
+              ? 'https://videos.pexels.com/video-files/3209829/3209829-uhd_3840_2160_25fps.mp4'
+              : item.videoUrl,
+        }));
+        setVideoList([...arr]);
+        // setVideoList([...res.data]);
       },
     },
   );
@@ -49,11 +54,14 @@ export default function Fyp({navigation, route}: Partial<any>) {
     changed.forEach((el: any) => {
       const cell: any = mediaRefs.current[el.index];
       if (cell) {
-        setOpenShare(false);
         // console.log(el, el.isViewable, 'bbbbbbelllll');
         if (el.isViewable) {
-          cell.playVideo();
-          cell.setPostId(setCommentId);
+          cell.callViewableIndex(el?.index);
+          if (el?.item.type === 'image') {
+            cell.startCountdown(el?.index, mediaRefs.current.length);
+            return;
+          }
+          cell.playVideo(el?.index, mediaRefs.current.length);
         } else {
           cell.pauseVideo();
         }
@@ -87,7 +95,6 @@ export default function Fyp({navigation, route}: Partial<any>) {
       <View style={[styles.container, {backgroundColor: palette.surface}]}>
         <FlashList
           ref={flashListRef}
-          // data={dummyVideos}
           data={videoList}
           pagingEnabled={true}
           estimatedItemSize={200}
@@ -124,8 +131,6 @@ export default function Fyp({navigation, route}: Partial<any>) {
               setOpenComments={setOpenComments}
               video={item.videoUrl}
               image={item.imageUrl}
-              openShare={openShare}
-              setOpenShare={setOpenShare}
             />
           )}
         />
