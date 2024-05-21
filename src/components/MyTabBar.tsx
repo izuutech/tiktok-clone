@@ -51,7 +51,6 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
               target: route.key,
             });
           };
-          console.log({isFocused});
           return (
             <TouchableOpacity
               accessibilityRole="button"
@@ -83,11 +82,29 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
                     </View>
                   ) : route.name === 'Add' ? (
                     <View style={[styles.addbox]}>
+                      <View
+                        style={{
+                          height: '100%',
+                          width: 10,
+                          backgroundColor: 'lightblue',
+                          position: 'absolute',
+                          left: 0,
+                        }}
+                      />
                       <FontAwesome6
                         name="plus"
                         size={24}
                         style={styles.menu}
                         color="black"
+                      />
+                      <View
+                        style={{
+                          height: '100%',
+                          width: 10,
+                          backgroundColor: 'red',
+                          position: 'absolute',
+                          right: 0,
+                        }}
                       />
                     </View>
                   ) : route.name === 'Inbox' ? (
@@ -124,11 +141,29 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
                     </View>
                   ) : route.name === 'Add' ? (
                     <View style={[styles.addbox]}>
+                      <View
+                        style={{
+                          height: '100%',
+                          width: 10,
+                          backgroundColor: 'lightblue',
+                          position: 'absolute',
+                          left: 0,
+                        }}
+                      />
                       <FontAwesome6
                         name="plus"
                         size={24}
                         style={styles.menu}
                         color="black"
+                      />
+                      <View
+                        style={{
+                          height: '100%',
+                          width: 10,
+                          backgroundColor: 'red',
+                          position: 'absolute',
+                          right: 0,
+                        }}
                       />
                     </View>
                   ) : route.name === 'Inbox' ? (
@@ -181,9 +216,12 @@ const styles = StyleSheet.create({
     height: 30,
     marginBottom: 50,
     borderRadius: 5,
+    flexDirection: 'row',
     justifyContent: 'center',
+    position: 'relative',
     alignItems: 'center',
     backgroundColor: 'white',
+    overflow: 'hidden',
   },
   menu: {
     position: 'absolute',

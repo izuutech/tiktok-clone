@@ -124,6 +124,7 @@ export default function Following({navigation, route}: Partial<any>) {
           renderItem={({item, index}) => (
             <DashboardView
               item={item}
+              active={'following'}
               index={index}
               key={item.id}
               mediaRefs={mediaRefs}

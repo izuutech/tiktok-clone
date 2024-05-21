@@ -113,6 +113,7 @@ export default function Fyp({navigation, route}: Partial<any>) {
           renderItem={({item, index}) => (
             <DashboardView
               item={item}
+              active={'fyp'}
               index={index}
               key={item.id}
               mediaRefs={mediaRefs}

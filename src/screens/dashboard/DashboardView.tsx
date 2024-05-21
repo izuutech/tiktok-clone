@@ -1,25 +1,18 @@
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  useWindowDimensions,
-  Animated,
-} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 
 import VideoPlayer from '../../components/VideoPlayer';
 import LikeBox from '../../components/LikeBox';
-import {useRef, useState} from 'react';
-import {useQuery} from 'react-query';
 import {IVideo} from '../../types/video';
 import PostDetails from '../../components/PostDetails';
 import MusicDetails from '../../components/MusicDetails';
-import {TabBarIndicator} from 'react-native-tab-view';
 import {FlashList} from '@shopify/flash-list';
+import TabIndicator from '../../components/TabIndicator';
 
 const windowHeight = Dimensions.get('window').height;
 
 export default function DashboardView({
+  active,
   mediaRefs,
   item,
   index,
@@ -32,7 +25,7 @@ export default function DashboardView({
   openShare,
   flashListRef,
   image,
-}: Partial<{
+}: {active: 'fyp' | 'following'} & Partial<{
   mediaRefs: any;
   item: IVideo;
   index: number;
@@ -46,8 +39,11 @@ export default function DashboardView({
   openShare: boolean;
   flashListRef: FlashList<any> | null;
 }>) {
+  const route = useRoute();
+
   return (
     <View style={styles.container}>
+      <TabIndicator active={active} />
       {showVideoTabs && !openComments && (
         <LikeBox
           setOpenShare={setOpenShare}
@@ -72,8 +68,8 @@ export default function DashboardView({
           (mediaRefs.current[index as number] = VideoSingleRef)
         }
       />
-      <MusicDetails />
       {showVideoTabs && !openComments && <PostDetails post={item as IVideo} />}
+      <MusicDetails />
     </View>
   );
 }
