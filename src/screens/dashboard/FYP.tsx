@@ -27,10 +27,6 @@ function Fyp({jumpTo, route}: Partial<any>) {
   const [pagination, setPagination] = useState({page: 1, limit: 4});
   const [videoList, setVideoList] = useState<IVideo[]>([]);
 
-  useEffect(() => {
-    console.log(route, 'kk');
-  }, [route]);
-
   const {isFetching, isLoading, isRefetching, refetch} = useQuery(
     `fyp`,
     () => httpService.get(`${URLS.FYP}`),
@@ -49,13 +45,14 @@ function Fyp({jumpTo, route}: Partial<any>) {
         // console.log(el, el.isViewable, 'bbbbbbelllll');
         if (el.isViewable) {
           cell.callViewableIndex(el?.index);
-          if (el?.item.type === 'image') {
+          if (el?.item.media.type === 'image') {
             cell.startCountdown(el?.index, mediaRefs.current.length);
             return;
           }
           cell.playVideo(el?.index, mediaRefs.current.length);
         } else {
           cell.pauseVideo();
+          cell.stopCountdown();
         }
       }
     });

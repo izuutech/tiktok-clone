@@ -15,6 +15,8 @@ import {
   ActivityIndicator,
   Dimensions,
   Image,
+  NativeSyntheticEvent,
+  ImageLoadEventData,
 } from 'react-native';
 import {useFocusEffect, useRoute} from '@react-navigation/native';
 
@@ -38,6 +40,7 @@ export const VideoPlayer = forwardRef(
 
     const videoPlayerRef = useRef<any>(null);
     const imageRef = useRef<any>(null);
+    const timeoutRef = useRef<any>(null);
     const [pause, setPause] = useState(true);
     const [viewableIndex, setViewableIndex] = useState(0);
     const [arrLength, setArrLength] = useState(0);
@@ -47,6 +50,7 @@ export const VideoPlayer = forwardRef(
     useImperativeHandle(parentRef, () => ({
       playVideo,
       startCountdown,
+      stopCountdown,
       callViewableIndex,
       pauseVideo,
       unload,
@@ -71,6 +75,12 @@ export const VideoPlayer = forwardRef(
       setViewableIndex(index);
     };
 
+    const stopCountdown = () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+
     const startCountdown = (currentViewableIndex: number, length: number) => {
       if (imageRef.current == null) {
         return;
@@ -79,14 +89,14 @@ export const VideoPlayer = forwardRef(
       const newIndex = currentViewableIndex + 1;
       setViewableIndex(currentViewableIndex);
       setArrLength(length);
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         if (currentViewableIndex < length) {
           flashListRef?.current?.scrollToIndex({
             index: newIndex,
             animated: true,
           });
         }
-      }, 10000);
+      }, 2000);
     };
 
     const pauseVideo = () => {
@@ -123,6 +133,19 @@ export const VideoPlayer = forwardRef(
       pauseVideo();
     }, [toggle]);
 
+    const onLoad = useCallback(
+      ({nativeEvent}: NativeSyntheticEvent<ImageLoadEventData>) => {
+        if (
+          nativeEvent.source &&
+          nativeEvent.source.width &&
+          nativeEvent.source.width > 0
+        ) {
+          setAspectRatio(nativeEvent.source.width / nativeEvent.source.height);
+        }
+        setReady(true);
+      },
+      [viewableIndex],
+    );
     return (
       <View
         style={[
@@ -193,18 +216,7 @@ export const VideoPlayer = forwardRef(
                 aspectRatio: aspectRatio,
               }}
               resizeMode="cover"
-              onLoad={({nativeEvent}) => {
-                if (
-                  nativeEvent.source &&
-                  nativeEvent.source.width &&
-                  nativeEvent.source.width > 0
-                ) {
-                  setAspectRatio(
-                    nativeEvent.source.width / nativeEvent.source.height,
-                  );
-                }
-                setReady(true);
-              }}
+              onLoad={onLoad}
               source={{uri: image}}
             />
           )}
@@ -236,4 +248,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VideoPlayer;
+export default React.memo(VideoPlayer);

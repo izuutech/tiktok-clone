@@ -85,22 +85,19 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
                       <View
                         style={{
                           height: '100%',
-                          width: 10,
+                          width: 35,
                           backgroundColor: 'lightblue',
                           position: 'absolute',
                           left: 0,
                         }}
                       />
-                      <FontAwesome6
-                        name="plus"
-                        size={24}
-                        style={styles.menu}
-                        color="black"
-                      />
+                      <View style={styles.plusbox}>
+                        <FontAwesome6 name="plus" size={24} color="black" />
+                      </View>
                       <View
                         style={{
                           height: '100%',
-                          width: 10,
+                          width: 35,
                           backgroundColor: 'red',
                           position: 'absolute',
                           right: 0,
@@ -144,22 +141,19 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
                       <View
                         style={{
                           height: '100%',
-                          width: 10,
+                          width: 35,
                           backgroundColor: 'lightblue',
                           position: 'absolute',
                           left: 0,
                         }}
                       />
-                      <FontAwesome6
-                        name="plus"
-                        size={24}
-                        style={styles.menu}
-                        color="black"
-                      />
+                      <View style={styles.plusbox}>
+                        <FontAwesome6 name="plus" size={24} color="black" />
+                      </View>
                       <View
                         style={{
                           height: '100%',
-                          width: 10,
+                          width: 35,
                           backgroundColor: 'red',
                           position: 'absolute',
                           right: 0,
@@ -223,7 +217,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     overflow: 'hidden',
   },
-  menu: {
+  plusbox: {
+    justifyContent: 'center',
     position: 'absolute',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    width: 65,
+    zIndex: 10,
+    height: '100%',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
   },
 });

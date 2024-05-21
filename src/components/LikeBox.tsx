@@ -73,10 +73,7 @@ export default function LikeBox({
           )}
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={styles.box}
-        // onPress={isVoted ? unvote_submit : vote_submit}
-        onPress={like_submit}>
+      <TouchableOpacity style={styles.box} onPress={like_submit}>
         {<AntDesign name="heart" size={35} color={isLiked ? 'red' : 'white'} />}
       </TouchableOpacity>
       <TouchableOpacity
@@ -90,9 +87,9 @@ export default function LikeBox({
           toast.show('my_success', {
             type: 'my_success',
             data: {
-              title: 'Comments:',
+              title: 'Message:',
               message:
-                'Your intentions are clear! You want to view comments. Unfortunately, the comments do not want to be viewed by you.',
+                'Your intentions are clear! Unfortunately, the comments do not want to be viewed by you.',
             },
           });
         }}>
@@ -104,10 +101,21 @@ export default function LikeBox({
         />
         <Text style={[styles.text, {color: 'white'}]}>{commentCount}</Text>
       </TouchableOpacity>
-      <View style={styles.boxWithText}>
+      <TouchableOpacity
+        style={styles.boxWithText}
+        onPress={() => {
+          toast.show('my_success', {
+            type: 'my_success',
+            data: {
+              title: 'Message:',
+              message:
+                'You must not share everything, try to be stingy with content ',
+            },
+          });
+        }}>
         <Entypo name="forward" size={35} color={'white'} />
         <Text style={[styles.text, {color: 'white'}]}>Share</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }
