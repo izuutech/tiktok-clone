@@ -58,6 +58,7 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
               accessibilityLabel={options.tabBarAccessibilityLabel}
               testID={options.tabBarTestID}
               onPress={onPress}
+              style={{width: '18%'}}
               onLongPress={onLongPress}
               key={index}>
               {isFocused ? (
@@ -193,10 +194,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     justifyContent: 'space-between',
-    paddingHorizontal: '5%',
+    paddingHorizontal: '2.5%',
   },
   menubox: {
-    // width: '15%',
+    width: '100%',
     height: 80,
     alignItems: 'center',
   },

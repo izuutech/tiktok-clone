@@ -29,7 +29,7 @@ function Following({jumpTo, route}: Partial<any>) {
   const [showVideoTabs, setShowVideoTabs] = useState(true);
   const [videoList, setVideoList] = useState<IVideo[]>([]);
 
-  const {refetch} = useQuery(
+  const {isLoading, isFetching, isRefetching} = useQuery(
     `following`,
     () => httpService.get(`${URLS.FOLLOWING}`),
     {
@@ -72,52 +72,45 @@ function Following({jumpTo, route}: Partial<any>) {
   );
 
   return (
-    <KeyboardAvoidingView behavior={'position'}>
-      <View style={[styles.container, {backgroundColor: palette.surface}]}>
-        <FlashList
-          ref={flashListRef}
-          // data={dummyVideos}
-          data={videoList}
-          pagingEnabled={true}
-          estimatedItemSize={200}
-          removeClippedSubviews={true}
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 90,
-          }}
-          onViewableItemsChanged={onViewableItemsChanged.current}
-          keyExtractor={(item, index) => item.id}
-          decelerationRate={'normal'}
-          renderItem={({item, index}) => (
-            <DashboardView
-              item={item}
-              index={index}
-              key={item.id}
-              mediaRefs={mediaRefs}
-              showVideoTabs={showVideoTabs}
-              setShowVideoTabs={setShowVideoTabs}
-              flashListRef={flashListRef as any}
-              video={item.media.videoUrl}
-              image={item.media.imageUrl}
-              route={route}
-              jumpTo={jumpTo}
-            />
-          )}
-        />
-        {/* {(isLoading || isFetching || isRefetching) && (
-            <ActivityIndicator
-              size={50}
-              style={styles.loader}
-              color={palette.surface}
-            />
-          )} */}
-      </View>
-    </KeyboardAvoidingView>
+    <View style={[styles.container, {backgroundColor: palette.surface}]}>
+      <FlashList
+        ref={flashListRef}
+        data={videoList}
+        pagingEnabled={true}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 90,
+        }}
+        estimatedItemSize={windowHeight}
+        onViewableItemsChanged={onViewableItemsChanged.current}
+        keyExtractor={(item, index) => item.id}
+        decelerationRate={'normal'}
+        renderItem={({item, index}) => (
+          <DashboardView
+            item={item}
+            index={index}
+            key={item.id}
+            mediaRefs={mediaRefs}
+            showVideoTabs={showVideoTabs}
+            setShowVideoTabs={setShowVideoTabs}
+            flashListRef={flashListRef as any}
+            video={item.media.videoUrl}
+            image={item.media.imageUrl}
+            route={route}
+            jumpTo={jumpTo}
+          />
+        )}
+      />
+      {(isLoading || isFetching) && videoList.length === 0 && (
+        <ActivityIndicator size={50} style={styles.loader} color={'black'} />
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
+    backgroundColor: 'red',
     width: '100%',
     ...Platform.select({
       ios: {

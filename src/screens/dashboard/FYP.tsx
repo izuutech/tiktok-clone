@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  Dimensions,
-  ActivityIndicator,
-  Platform,
-  KeyboardAvoidingView,
-} from 'react-native';
+import {StyleSheet, View, Dimensions, Platform} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
 
@@ -16,6 +9,7 @@ import DashboardView from './DashboardView';
 import httpService from '../../apis/http';
 import {URLS} from '../../apis/urls';
 import {IVideo} from '../../types/video';
+import {ActivityIndicator} from 'react-native';
 
 const windowHeight = Dimensions.get('window').height;
 function Fyp({jumpTo, route}: Partial<any>) {
@@ -23,11 +17,9 @@ function Fyp({jumpTo, route}: Partial<any>) {
   const mediaRefs = useRef([]);
   const flashListRef = useRef<any>(null);
   const [showVideoTabs, setShowVideoTabs] = useState(true);
-  const [fetchMore, setFetchMore] = useState(true);
-  const [pagination, setPagination] = useState({page: 1, limit: 4});
   const [videoList, setVideoList] = useState<IVideo[]>([]);
 
-  const {isFetching, isLoading, isRefetching, refetch} = useQuery(
+  const {isLoading, isFetching} = useQuery(
     `fyp`,
     () => httpService.get(`${URLS.FYP}`),
     {
@@ -43,6 +35,7 @@ function Fyp({jumpTo, route}: Partial<any>) {
       const cell: any = mediaRefs.current[el.index];
       if (cell) {
         // console.log(el, el.isViewable, 'bbbbbbelllll');
+        console.log(el?.index, 'indddd');
         if (el.isViewable) {
           cell.callViewableIndex(el?.index);
           if (el?.item.media.type === 'image') {
@@ -58,16 +51,6 @@ function Fyp({jumpTo, route}: Partial<any>) {
     });
   });
 
-  useEffect(() => {
-    setFetchMore(false);
-  }, []);
-
-  useEffect(() => {
-    if (fetchMore === true) {
-      refetch();
-    }
-  }, [pagination]);
-
   useFocusEffect(
     useCallback(() => {
       const unsubscribe = () => {
@@ -80,57 +63,38 @@ function Fyp({jumpTo, route}: Partial<any>) {
   );
 
   return (
-    <KeyboardAvoidingView behavior={'position'}>
-      <View style={[styles.container, {backgroundColor: palette.surface}]}>
-        <FlashList
-          ref={flashListRef}
-          data={videoList}
-          pagingEnabled={true}
-          estimatedItemSize={200}
-          removeClippedSubviews={true}
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 90,
-          }}
-          onViewableItemsChanged={onViewableItemsChanged.current}
-          keyExtractor={(item, index) => item.id}
-          decelerationRate={'normal'}
-          onEndReached={() => {
-            if (!isFetching && !isRefetching && !isLoading) {
-              setPagination(prev => ({
-                ...pagination,
-                page: (prev.page += 1),
-              }));
-            }
-          }}
-          onEndReachedThreshold={0.1}
-          onScrollBeginDrag={() => {
-            setFetchMore(true);
-          }}
-          renderItem={({item, index}) => (
-            <DashboardView
-              item={item}
-              index={index}
-              key={item.id}
-              mediaRefs={mediaRefs}
-              showVideoTabs={showVideoTabs}
-              setShowVideoTabs={setShowVideoTabs}
-              flashListRef={flashListRef as any}
-              video={item.media.videoUrl}
-              image={item.media.imageUrl}
-              route={route}
-              jumpTo={jumpTo}
-            />
-          )}
-        />
-        {/* {(isLoading || isFetching || isRefetching) && (
-            <ActivityIndicator
-              size={50}
-              style={styles.loader}
-              color={palette.surface}
-            />
-          )} */}
-      </View>
-    </KeyboardAvoidingView>
+    <View style={[styles.container, {backgroundColor: palette.surface}]}>
+      <FlashList
+        ref={flashListRef}
+        data={videoList}
+        pagingEnabled={true}
+        estimatedItemSize={windowHeight}
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 90,
+        }}
+        onViewableItemsChanged={onViewableItemsChanged.current}
+        keyExtractor={(item, index) => item.id}
+        decelerationRate={'normal'}
+        renderItem={({item, index}) => (
+          <DashboardView
+            item={item}
+            index={index}
+            key={item.id}
+            mediaRefs={mediaRefs}
+            showVideoTabs={showVideoTabs}
+            setShowVideoTabs={setShowVideoTabs}
+            flashListRef={flashListRef as any}
+            video={item.media.videoUrl}
+            image={item.media.imageUrl}
+            route={route}
+            jumpTo={jumpTo}
+          />
+        )}
+      />
+      {(isLoading || isFetching) && videoList.length === 0 && (
+        <ActivityIndicator size={50} style={styles.loader} color={'black'} />
+      )}
+    </View>
   );
 }
 

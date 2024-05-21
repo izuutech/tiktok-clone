@@ -86,17 +86,17 @@ export const VideoPlayer = forwardRef(
         return;
       }
 
-      const newIndex = currentViewableIndex + 1;
       setViewableIndex(currentViewableIndex);
       setArrLength(length);
-      timeoutRef.current = setTimeout(() => {
-        if (currentViewableIndex < length) {
+      console.log({currentViewableIndex, length: length - 1}, 'p');
+      if (currentViewableIndex < length - 1) {
+        timeoutRef.current = setTimeout(() => {
           flashListRef?.current?.scrollToIndex({
-            index: newIndex,
+            index: currentViewableIndex + 1,
             animated: true,
           });
-        }
-      }, 2000);
+        }, 2000);
+      }
     };
 
     const pauseVideo = () => {

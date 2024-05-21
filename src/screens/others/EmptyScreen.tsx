@@ -69,7 +69,16 @@ const EmptyScreen = ({}) => {
         Joshua and Luupli
       </Text>
       <Text style={{fontWeight: 'bold', fontSize: 20, textAlign: 'center'}}>
-        CAN change the World 😃😃
+        CAN change the World
+      </Text>
+      <Text
+        style={{
+          fontWeight: 'bold',
+          fontSize: 14,
+          textAlign: 'center',
+          marginTop: 20,
+        }}>
+        Want to see a trick? Click the image 😃
       </Text>
     </View>
   );
