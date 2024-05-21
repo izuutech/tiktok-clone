@@ -1,7 +1,9 @@
+import {useRoute} from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
 import {View, Image, Animated, Text} from 'react-native';
 
 const EmptyScreen = ({}) => {
+  const route = useRoute();
   const [bounceAnim] = useState(new Animated.Value(0));
   const bounceHeight = 20;
   useEffect(() => {
@@ -23,6 +25,9 @@ const EmptyScreen = ({}) => {
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text style={{fontWeight: 'bold', fontSize: 20, textAlign: 'center'}}>
+        "{route.name}" Page
+      </Text>
       <Animated.Image
         source={require('../../assets/manthinking.png')}
         style={{

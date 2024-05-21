@@ -16,7 +16,6 @@ import {useContext, useState, useCallback, useRef, useEffect} from 'react';
 
 import {useQuery} from 'react-query';
 import DashboardView from './DashboardView';
-import CommentBox from '../../components/CommentBox';
 import httpService from '../../apis/http';
 import {URLS} from '../../apis/urls';
 import {IVideo} from '../../types/video';
@@ -147,7 +146,6 @@ export default function Following({navigation, route}: Partial<any>) {
               color={palette.surface}
             />
           )} */}
-        {openComments && <CommentBox />}
       </View>
     </KeyboardAvoidingView>
   );

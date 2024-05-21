@@ -1,9 +1,15 @@
-import {StyleSheet, View, Dimensions, useWindowDimensions} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  useWindowDimensions,
+  Animated,
+} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 
 import VideoPlayer from '../../components/VideoPlayer';
 import LikeBox from '../../components/LikeBox';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {useQuery} from 'react-query';
 import {IVideo} from '../../types/video';
 import PostDetails from '../../components/PostDetails';
@@ -40,17 +46,11 @@ export default function DashboardView({
   openShare: boolean;
   flashListRef: FlashList<any> | null;
 }>) {
-  const layout = useWindowDimensions();
-  const [openModal, setOpenModal] = useState(false);
-
   return (
     <View style={styles.container}>
       {showVideoTabs && !openComments && (
         <LikeBox
-          openShare={openShare}
           setOpenShare={setOpenShare}
-          setOpenModal={setOpenModal}
-          openModal={openModal}
           openComments={openComments}
           setOpenComments={setOpenComments}
           commentCount={item?.comments || 0}

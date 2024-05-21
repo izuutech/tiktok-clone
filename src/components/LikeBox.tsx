@@ -1,20 +1,12 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-import {useCallback, useContext, useEffect, useState} from 'react';
-import {useQuery} from 'react-query';
-import {useNavigation} from '@react-navigation/native';
+import {useState} from 'react';
+import useToast from '../hooks/useToast';
 
 const avatarPlaceholder = require('../assets/avatarPlaceholder.png');
 
@@ -25,11 +17,19 @@ export default function LikeBox({
   openComments,
   canOpenComment,
   commentCount,
-}: Partial<any>) {
+}: Partial<{
+  setOpenShare: any;
+  likes: number;
+  setOpenComments: any;
+  openComments: boolean;
+  canOpenComment: boolean;
+  commentCount: number;
+}>) {
   const palette: any = {};
+  const toast = useToast();
   const [isLiked, setIsLiked] = useState(false);
   const [avatarLoaded, setAvatarLoaded] = useState(false);
-  const [likesCount, setLikesCount] = useState(likes);
+  const [likesCount, setLikesCount] = useState(likes as number);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const like_submit = async () => {
@@ -38,6 +38,7 @@ export default function LikeBox({
       setLikesCount((prev: number) => (prev -= 1));
       return;
     }
+
     setIsLiked(true);
     setLikesCount((prev: number) => (prev += 1));
   };
@@ -90,11 +91,16 @@ export default function LikeBox({
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.boxWithText}
-        onPress={
-          canOpenComment === false
-            ? () => {}
-            : () => setOpenComments(!openComments)
-        }>
+        onPress={() => {
+          toast.show('my_success', {
+            type: 'my_success',
+            data: {
+              title: 'Comments:',
+              message:
+                'Your intentions are clear! You want to view comments. Unfortunately, the comments do not want to be viewed by you.',
+            },
+          });
+        }}>
         <FontAwesome
           name="commenting"
           size={35}

@@ -7,14 +7,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-const homeIcon = require('../assets/homeIcon.png');
-const homeIconActive = require('../assets/homeIconActive.png');
-const bellIcon = require('../assets/bellIcon.png');
-const bellIconActive = require('../assets/bellIconActive.png');
-const accountIcon = require('../assets/accountIcon.png');
-const accountIconActive = require('../assets/accountIconActive.png');
 
 export default function MyTabBar({state, descriptors, navigation}: any) {
   const showBottomBar = true;
@@ -71,15 +63,23 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
               key={index}>
               {isFocused ? (
                 <>
-                  {route.name === 'Dashboard' ? (
+                  {route.name === 'Home' ? (
                     <View style={styles.menubox}>
                       <Entypo name="home" size={24} color="white" />
-                      <Text style={styles.menutxt}>{label}</Text>
+                      <Text style={[styles.menutxt, {fontWeight: 'bold'}]}>
+                        {label}
+                      </Text>
                     </View>
                   ) : route.name === 'Discover' ? (
                     <View style={styles.menubox}>
-                      <Feather name="search" size={24} color="white" />
-                      <Text style={styles.menutxt}>{label}</Text>
+                      <Ionicons
+                        name="search-circle-sharp"
+                        size={24}
+                        color="white"
+                      />
+                      <Text style={[styles.menutxt, {fontWeight: 'bold'}]}>
+                        {label}
+                      </Text>
                     </View>
                   ) : route.name === 'Add' ? (
                     <View style={[styles.addbox]}>
@@ -97,12 +97,16 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
                         size={24}
                         color="white"
                       />
-                      <Text style={styles.menutxt}>{label}</Text>
+                      <Text style={[styles.menutxt, {fontWeight: 'bold'}]}>
+                        {label}
+                      </Text>
                     </View>
                   ) : (
                     <View style={styles.menubox}>
                       <Ionicons name="person" size={24} color="white" />
-                      <Text style={styles.menutxt}>{label}</Text>
+                      <Text style={[styles.menutxt, {fontWeight: 'bold'}]}>
+                        {label}
+                      </Text>
                     </View>
                   )}
                 </>
@@ -155,15 +159,16 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 90,
+    height: 100,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: 10,
     justifyContent: 'space-between',
     paddingHorizontal: '5%',
   },
   menubox: {
     // width: '15%',
-    height: 90,
+    height: 80,
     alignItems: 'center',
   },
   menutxt: {
