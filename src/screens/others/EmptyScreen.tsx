@@ -44,8 +44,20 @@ const EmptyScreen = ({}) => {
   }, []);
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{fontWeight: 'bold', fontSize: 20, textAlign: 'center'}}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Text
+        style={{
+          fontWeight: 'bold',
+          fontSize: 20,
+          textAlign: 'center',
+          color: 'white',
+        }}>
         "{route.name}" Page
       </Text>
       <TouchableOpacity onPress={handlePress}>
@@ -64,11 +76,18 @@ const EmptyScreen = ({}) => {
           fontWeight: 'bold',
           fontSize: 20,
           textAlign: 'center',
+          color: 'white',
           marginTop: 50,
         }}>
         Joshua and Luupli
       </Text>
-      <Text style={{fontWeight: 'bold', fontSize: 20, textAlign: 'center'}}>
+      <Text
+        style={{
+          fontWeight: 'bold',
+          color: 'white',
+          fontSize: 20,
+          textAlign: 'center',
+        }}>
         CAN change the World
       </Text>
       <Text
@@ -76,6 +95,7 @@ const EmptyScreen = ({}) => {
           fontWeight: 'bold',
           fontSize: 14,
           textAlign: 'center',
+          color: 'white',
           marginTop: 20,
         }}>
         Want to see a trick? Click the image 😃

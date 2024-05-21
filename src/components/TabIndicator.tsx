@@ -3,7 +3,6 @@ import React, {useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import RouteContext from '../contexts/routecontext';
 
-// export default function TabIndicator({active}: {active: 'fyp' | 'following'}) {
 export default function TabIndicator({
   route,
   jumpTo,
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
     paddingVertical: 30,
-    top: 50,
+    top: 20,
   },
   text: {
     fontSize: 18,
