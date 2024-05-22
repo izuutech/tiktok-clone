@@ -15,6 +15,7 @@ import DashboardView from './DashboardView';
 import httpService from '../../apis/http';
 import {URLS} from '../../apis/urls';
 import {IVideo} from '../../types/video';
+import TabIndicator from '../../components/TabIndicator';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -69,6 +70,7 @@ function Following({jumpTo, route}: Partial<any>) {
 
   return (
     <View style={[styles.container, {backgroundColor: 'black'}]}>
+      <TabIndicator route={route} jumpTo={jumpTo} />
       <FlashList
         ref={flashListRef}
         data={videoList}

@@ -36,7 +36,6 @@ export default function DashboardView({
 }>) {
   return (
     <View style={styles.container}>
-      <TabIndicator route={route} jumpTo={jumpTo} />
       {showVideoTabs && (
         <LikeBox
           item={item}

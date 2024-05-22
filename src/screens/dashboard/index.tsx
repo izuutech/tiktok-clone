@@ -4,6 +4,7 @@ import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import Following from './Following';
 import Fyp from './FYP';
 import RouteContext from '../../contexts/routecontext';
+import TabIndicator from '../../components/TabIndicator';
 
 const renderScene = SceneMap({
   following: Following,
