@@ -109,7 +109,7 @@ export default function LikeBox({
         <FontAwesome
           name="commenting"
           size={35}
-          style={{transform: [{rotateY: '180deg'}]}}
+          // style={{transform: [{rotateY: '180deg'}]}}
           color="white"
         />
         <Text style={[styles.text, {color: 'white'}]}>{commentCount}</Text>

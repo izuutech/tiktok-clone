@@ -71,6 +71,7 @@ function App(): React.JSX.Element {
                           source={{uri: 'https://picsum.photos/400'}}
                           width={20}
                           height={20}
+                          style={{borderRadius: 10}}
                         />
                       </View>
                       <View style={{width: '80%'}}>
