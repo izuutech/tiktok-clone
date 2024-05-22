@@ -32,7 +32,7 @@ export default function Dashboard() {
         borderBottomColor: '#ffffff00',
       }}
       style={{
-        backgroundColor: '#ffffff00',
+        backgroundColor: 'black',
         // position: 'absolute',
         display: 'none',
         zIndex: 10,

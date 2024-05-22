@@ -1,20 +1,52 @@
-import {StyleSheet, View, Text, Platform} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View, Text, TouchableOpacity, Platform} from 'react-native';
 import {IVideo} from '../types/video';
 
 export default function PostDetails({post}: {post: IVideo}) {
-  const palette: any = {};
+  const [showFullCaption, setShowFullCaption] = useState(false);
+
+  const handleSeeMore = () => {
+    setShowFullCaption(!showFullCaption);
+  };
+
+  const renderCaption = () => {
+    if (showFullCaption) {
+      return post.caption.split(' ').map((word, index) => (
+        <Text
+          key={index}
+          style={word.startsWith('#') ? styles.boldText : styles.text}>
+          {word}{' '}
+        </Text>
+      ));
+    } else {
+      const truncatedCaption =
+        post.caption.length > 50
+          ? post.caption.slice(0, 50) + '...'
+          : post.caption;
+      return truncatedCaption.split(' ').map((word, index) => (
+        <Text
+          key={index}
+          style={word.startsWith('#') ? styles.boldText : styles.text}>
+          {word}{' '}
+        </Text>
+      ));
+    }
+  };
+
   return (
-    <View
-      style={{
-        ...styles.container,
-        backgroundColor: '#ffffff05',
-        // height: height || title?.length > 50 ? '55%' : styles.container.height,
-      }}>
+    <View style={styles.container}>
       <View style={[styles.displaybox]}>
         <Text style={[styles.username, {color: 'white'}]}>
           @{post.username?.toLowerCase()}
         </Text>
-        <Text style={[styles.caption, {color: 'white'}]}>{post.caption}</Text>
+        <Text style={[styles.caption, {color: 'white'}]}>
+          {renderCaption()}{' '}
+          {post.caption.length > 50 && (
+            <Text style={styles.btnText} onPress={handleSeeMore}>
+              {showFullCaption ? ' See less' : ' See more'}
+            </Text>
+          )}
+        </Text>
       </View>
     </View>
   );
@@ -34,7 +66,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
     paddingVertical: 10,
     width: '80%',
-    // flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -47,28 +78,29 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   caption: {
-    fontFamily: 'carbona-reg',
     fontSize: 14,
     lineHeight: 15,
-
     width: '100%',
     flexWrap: 'wrap',
     textAlignVertical: 'center',
   },
-  btn: {
-    width: '20%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+  text: {
+    fontSize: 14,
+    lineHeight: 15,
+    color: 'white',
+  },
+  boldText: {
+    fontSize: 14,
+    lineHeight: 15,
+    color: 'white',
+    fontWeight: 'bold',
   },
   btnText: {
-    fontFamily: 'carbona-bold',
+    fontWeight: 'bold',
     fontSize: 14,
-    lineHeight: 14,
-    ...Platform.select({
-      ios: {height: 14},
-      android: {height: '100%'},
-    }),
+    lineHeight: 15,
     textAlignVertical: 'center',
+    color: 'white',
+    marginTop: 5,
   },
 });

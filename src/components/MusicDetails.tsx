@@ -12,7 +12,7 @@ export default function MusicDetails() {
         color={'white'}
       />
       <Text style={[styles.text, {color: 'white'}]}>
-        I got no rule - Dua Lipa{' '}
+        Roddy Roundicch - The Round Table{' '}
       </Text>
       {/* <Marquee
         text="I got no rule - Dua LipaI got no rule - Dua LipaI got no rule - Dua Lipa"
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: 'carbona-reg',
     fontSize: 13,
-    lineHeight: 13,
+    lineHeight: 16,
     height: '100%',
   },
 });

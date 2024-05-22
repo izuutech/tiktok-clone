@@ -95,7 +95,7 @@ export const VideoPlayer = forwardRef(
             index: currentViewableIndex + 1,
             animated: true,
           });
-        }, 2000);
+        }, 10000);
       }
     };
 

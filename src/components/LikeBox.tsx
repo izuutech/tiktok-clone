@@ -5,7 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import useToast from '../hooks/useToast';
 import {IVideo} from '../types/video';
 
@@ -23,10 +23,21 @@ export default function LikeBox({
   const palette: any = {};
   const toast = useToast();
   const [isLiked, setIsLiked] = useState(false);
+  const [showFollow, setShowFollow] = useState(true);
   const [avatarLoaded, setAvatarLoaded] = useState(false);
   const [likesCount, setLikesCount] = useState(likes as number);
   const [isFollowing, setIsFollowing] = useState(false);
 
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      if (isFollowing) {
+        setShowFollow(false);
+      }
+    }, 2000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [isFollowing]);
   const like_submit = async () => {
     if (isLiked) {
       setIsLiked(false);
@@ -63,15 +74,17 @@ export default function LikeBox({
             style={styles.userIcon}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={follow_user}
-          style={[styles.followCircle, {backgroundColor: 'red'}]}>
-          {isFollowing ? (
-            <Fontisto name="check" size={7} color="white" />
-          ) : (
-            <Octicons name="plus" size={15} color={'white'} />
-          )}
-        </TouchableOpacity>
+        {showFollow && (
+          <TouchableOpacity
+            onPress={follow_user}
+            style={[styles.followCircle, {backgroundColor: 'red'}]}>
+            {isFollowing ? (
+              <Fontisto name="check" size={7} color="white" />
+            ) : (
+              <Octicons name="plus" size={15} color={'white'} />
+            )}
+          </TouchableOpacity>
+        )}
       </View>
       <TouchableOpacity style={styles.box} onPress={like_submit}>
         {<AntDesign name="heart" size={35} color={isLiked ? 'red' : 'white'} />}

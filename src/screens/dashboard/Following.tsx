@@ -34,6 +34,7 @@ function Following({jumpTo, route}: Partial<any>) {
     () => httpService.get(`${URLS.FOLLOWING}`),
     {
       onSuccess: res => {
+        console.log(res.data[0], 'has loaded');
         setVideoList([...res.data]);
       },
     },
@@ -72,7 +73,7 @@ function Following({jumpTo, route}: Partial<any>) {
   );
 
   return (
-    <View style={[styles.container, {backgroundColor: palette.surface}]}>
+    <View style={[styles.container, {backgroundColor: 'black'}]}>
       <FlashList
         ref={flashListRef}
         data={videoList}
@@ -101,7 +102,7 @@ function Following({jumpTo, route}: Partial<any>) {
         )}
       />
       {(isLoading || isFetching) && videoList.length === 0 && (
-        <ActivityIndicator size={50} style={styles.loader} color={'black'} />
+        <ActivityIndicator size={50} style={styles.loader} color={'white'} />
       )}
     </View>
   );
@@ -110,7 +111,6 @@ function Following({jumpTo, route}: Partial<any>) {
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    backgroundColor: 'red',
     width: '100%',
     ...Platform.select({
       ios: {
@@ -120,8 +120,6 @@ const styles = StyleSheet.create({
         height: windowHeight,
       },
     }),
-    // height: '100%',
-    // flex: 1,
   },
   communityBox: {
     position: 'absolute',
