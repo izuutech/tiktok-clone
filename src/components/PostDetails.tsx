@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Platform} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import {IVideo} from '../types/video';
 
 export default function PostDetails({post}: {post: IVideo}) {

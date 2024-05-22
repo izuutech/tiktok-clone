@@ -36,12 +36,9 @@ function Following({jumpTo, route}: Partial<any>) {
   );
 
   const onViewableItemsChanged = useRef(({changed}: any) => {
-    // console.log(changed, 'changed');
     changed.forEach((el: any) => {
       const cell: any = mediaRefs.current[el.index];
       if (cell) {
-        // console.log(el, el.isViewable, 'bbbbbbelllll');
-
         if (el.isViewable) {
           cell.callViewableIndex(el?.index);
           if (el?.item.media.type === 'image') {
@@ -61,7 +58,6 @@ function Following({jumpTo, route}: Partial<any>) {
     useCallback(() => {
       const unsubscribe = () => {
         mediaRefs.current = [];
-        // setVideoList([]);
       };
 
       return () => unsubscribe();

@@ -18,7 +18,7 @@ const EmptyScreen = ({}) => {
       }).start();
     } else {
       Animated.timing(sizeAnim, {
-        toValue: 1.5, // Adjust the scale factor as needed
+        toValue: 1.5,
         duration: 500,
         useNativeDriver: true,
       }).start();
@@ -68,7 +68,7 @@ const EmptyScreen = ({}) => {
             height: 300,
             transform: [{translateY: bounceAnim}, {scale: sizeAnim}],
           }}
-          resizeMode="contain" // Ensure the image fits within the container after scaling
+          resizeMode="contain"
         />
       </TouchableOpacity>
       <Text

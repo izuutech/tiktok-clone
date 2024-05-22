@@ -6,7 +6,6 @@ import {IVideo} from '../../types/video';
 import PostDetails from '../../components/PostDetails';
 import MusicDetails from '../../components/MusicDetails';
 import {FlashList} from '@shopify/flash-list';
-import TabIndicator from '../../components/TabIndicator';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -85,8 +84,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
     height: windowHeight,
-    // zIndex: 1,
-    // flex: 1,
   },
   more: {
     position: 'absolute',

@@ -16,7 +16,7 @@ import {
   NativeSyntheticEvent,
   ImageLoadEventData,
 } from 'react-native';
-import {useFocusEffect, useRoute} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
 import Video, {ResizeMode} from 'react-native-video';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -203,7 +203,6 @@ export const VideoPlayer = forwardRef(
               poster={thumbnail}
               onError={e => console.log('e', 'error loggg video')}
               repeat={true}
-              // paused={ready === false ? true : pause}
               paused={pause}
             />
           ) : (

@@ -2,7 +2,7 @@ import {StyleSheet, View, Dimensions, Platform} from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
 
-import React, {useState, useCallback, useRef, useEffect} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 
 import {useQuery} from 'react-query';
 import DashboardView from './DashboardView';
@@ -31,11 +31,9 @@ function Fyp({jumpTo, route}: Partial<any>) {
   );
 
   const onViewableItemsChanged = useRef(({changed}: any) => {
-    // console.log(changed, 'changed');
     changed.forEach((el: any) => {
       const cell: any = mediaRefs.current[el.index];
       if (cell) {
-        // console.log(el, el.isViewable, 'bbbbbbelllll');
         if (el.isViewable) {
           cell.callViewableIndex(el?.index);
           if (el?.item.media.type === 'image') {
@@ -55,7 +53,6 @@ function Fyp({jumpTo, route}: Partial<any>) {
     useCallback(() => {
       const unsubscribe = () => {
         mediaRefs.current = [];
-        // setVideoList([]);
       };
 
       return () => unsubscribe();
@@ -111,8 +108,6 @@ const styles = StyleSheet.create({
         height: windowHeight,
       },
     }),
-    // height: '100%',
-    // flex: 1,
   },
   communityBox: {
     position: 'absolute',

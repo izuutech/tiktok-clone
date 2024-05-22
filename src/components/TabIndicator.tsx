@@ -1,4 +1,3 @@
-import {useRoute} from '@react-navigation/native';
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import RouteContext from '../contexts/routecontext';

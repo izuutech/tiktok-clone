@@ -4,12 +4,9 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
-
 import {useEffect, useState} from 'react';
 import useToast from '../hooks/useToast';
 import {IVideo} from '../types/video';
-
-const avatarPlaceholder = require('../assets/avatarPlaceholder.png');
 
 export default function LikeBox({
   likes,
@@ -106,12 +103,7 @@ export default function LikeBox({
             },
           });
         }}>
-        <FontAwesome
-          name="commenting"
-          size={35}
-          // style={{transform: [{rotateY: '180deg'}]}}
-          color="white"
-        />
+        <FontAwesome name="commenting" size={35} color="white" />
         <Text style={[styles.text, {color: 'white'}]}>{commentCount}</Text>
       </TouchableOpacity>
       <TouchableOpacity

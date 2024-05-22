@@ -1,5 +1,5 @@
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {StyleSheet, View, Text, Dimensions} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Marquee from './Marquee';
 
 export default function MusicDetails() {
@@ -11,9 +11,6 @@ export default function MusicDetails() {
         style={{marginRight: 10}}
         color={'white'}
       />
-      {/* <Text style={[styles.text, {color: 'white'}]}>
-        Roddy Roundicch - The Round Table{' '}
-      </Text> */}
       <View style={styles.marqueebox}>
         <Marquee text=" Roddy Roundicch - The Round Table" />
       </View>

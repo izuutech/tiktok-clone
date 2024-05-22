@@ -41,7 +41,6 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
 
             if (!isFocused && !event.defaultPrevented) {
               navigation.navigate(route.name, {});
-              // navigation.navigate(route.name, route.params);
             }
           };
 

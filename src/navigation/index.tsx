@@ -2,7 +2,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 
 import DashboardStack from './DashboardStack';
-import {View} from 'react-native';
 
 const Stack = createStackNavigator();
 
