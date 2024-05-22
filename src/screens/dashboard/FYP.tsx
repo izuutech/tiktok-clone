@@ -35,7 +35,6 @@ function Fyp({jumpTo, route}: Partial<any>) {
       const cell: any = mediaRefs.current[el.index];
       if (cell) {
         // console.log(el, el.isViewable, 'bbbbbbelllll');
-        console.log(el?.index, 'indddd');
         if (el.isViewable) {
           cell.callViewableIndex(el?.index);
           if (el?.item.media.type === 'image') {

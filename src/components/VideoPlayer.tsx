@@ -10,10 +10,8 @@ import React, {
 import {
   StyleSheet,
   TouchableHighlight,
-  Keyboard,
   View,
   ActivityIndicator,
-  Dimensions,
   Image,
   NativeSyntheticEvent,
   ImageLoadEventData,
@@ -88,7 +86,6 @@ export const VideoPlayer = forwardRef(
 
       setViewableIndex(currentViewableIndex);
       setArrLength(length);
-      console.log({currentViewableIndex, length: length - 1}, 'p');
       if (currentViewableIndex < length - 1) {
         timeoutRef.current = setTimeout(() => {
           flashListRef?.current?.scrollToIndex({
@@ -123,6 +120,8 @@ export const VideoPlayer = forwardRef(
       useCallback(() => {
         const unsubscribe = () => {
           setPause(true);
+          pauseVideo();
+          stopCountdown();
         };
 
         return () => unsubscribe();
@@ -168,7 +167,7 @@ export const VideoPlayer = forwardRef(
           />
         )}
         {video && (loader || ready === false) && (
-          <ActivityIndicator style={styles.loader} color={'yellow'} size={50} />
+          <ActivityIndicator style={styles.loader} color={'white'} size={50} />
         )}
         <TouchableHighlight
           onPress={() => {

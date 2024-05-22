@@ -50,6 +50,10 @@ export default function Dashboard() {
       onIndexChange={setIndex}
       initialLayout={{width: layout.width}}
       onSwipeEnd={() => setToggle((prev: boolean) => !prev)}
+      lazy
+      renderLazyPlaceholder={() => (
+        <View style={{backgroundColor: 'black', flex: 1}}></View>
+      )}
     />
   );
 }

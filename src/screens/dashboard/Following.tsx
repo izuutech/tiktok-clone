@@ -29,7 +29,6 @@ function Following({jumpTo, route}: Partial<any>) {
     () => httpService.get(`${URLS.FOLLOWING}`),
     {
       onSuccess: res => {
-        console.log(res.data[0], 'has loaded');
         setVideoList([...res.data]);
       },
     },
@@ -41,6 +40,7 @@ function Following({jumpTo, route}: Partial<any>) {
       const cell: any = mediaRefs.current[el.index];
       if (cell) {
         // console.log(el, el.isViewable, 'bbbbbbelllll');
+
         if (el.isViewable) {
           cell.callViewableIndex(el?.index);
           if (el?.item.media.type === 'image') {
