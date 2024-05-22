@@ -2,7 +2,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Live APK
 
-- ["Download from google drive"](https://drive.google.com/file/d/1z5INAHJhPTbWcLz6F2Sdx8CoVgP8rBO7/view?usp=drive_link)
+- ["Download from google drive"](https://drive.google.com/file/d/1ZILndqLgH-SvJeNeJDa2kxMsGn8KB_US/view?usp=drivesdk)
 
 # Getting Started
 
