@@ -99,7 +99,6 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
                         style={{
                           height: '100%',
                           width: 35,
-                          backgroundColor: 'red',
                           position: 'absolute',
                           right: 0,
                         }}
@@ -155,7 +154,6 @@ export default function MyTabBar({state, descriptors, navigation}: any) {
                         style={{
                           height: '100%',
                           width: 35,
-                          backgroundColor: 'red',
                           position: 'absolute',
                           right: 0,
                         }}

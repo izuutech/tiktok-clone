@@ -4,15 +4,11 @@ import {
   Dimensions,
   ActivityIndicator,
   Platform,
-  KeyboardAvoidingView,
-  Alert,
-  FlatList,
-  Text,
 } from 'react-native';
 import {useFocusEffect} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
 
-import React, {useState, useCallback, useRef, useEffect} from 'react';
+import React, {useState, useCallback, useRef} from 'react';
 
 import {useQuery} from 'react-query';
 import DashboardView from './DashboardView';
@@ -23,7 +19,6 @@ import {IVideo} from '../../types/video';
 const windowHeight = Dimensions.get('window').height;
 
 function Following({jumpTo, route}: Partial<any>) {
-  const palette: any = {};
   const mediaRefs = useRef([]);
   const flashListRef = useRef<any>(null);
   const [showVideoTabs, setShowVideoTabs] = useState(true);
@@ -142,5 +137,4 @@ const styles = StyleSheet.create({
     left: '45%',
   },
 });
-
 export default React.memo(Following);

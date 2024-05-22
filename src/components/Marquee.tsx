@@ -1,27 +1,40 @@
 import React, {useRef, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  Dimensions,
+  LayoutChangeEvent,
+} from 'react-native';
 
-const Marquee = ({text, duration = 5000}) => {
-  const screenWidth = Dimensions.get('window').width;
-  const textWidth = useRef(0);
+const screenWidth = Dimensions.get('window').width;
+const Marquee = ({
+  text,
+  duration = 5000,
+}: {
+  text: string;
+  duration?: number;
+}) => {
+  const [textWidth, setTextWidth] = useState(0);
   const translateX = useRef(new Animated.Value(screenWidth)).current;
 
   useEffect(() => {
     Animated.loop(
       Animated.timing(translateX, {
-        toValue: -textWidth.current,
+        toValue: -textWidth,
         duration: duration,
         useNativeDriver: true,
       }),
     ).start();
-  }, [duration]);
+  }, [textWidth, text, duration]);
 
-  const onLayout = event => {
-    textWidth.current = event.nativeEvent.layout.width;
+  const onLayout = (event: LayoutChangeEvent) => {
+    setTextWidth(event.nativeEvent.layout.width);
   };
 
   return (
-    <View style={[styles.container, {width: textWidth.current}]}>
+    <View style={[styles.container, {width: textWidth}]}>
       <Animated.View
         style={[
           styles.marqueeContainer,
@@ -38,7 +51,6 @@ const Marquee = ({text, duration = 5000}) => {
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
-    backgroundColor: 'red',
     height: 20,
     justifyContent: 'center',
   },
@@ -51,7 +63,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     lineHeight: 17,
-    fontWeight: 'bold',
     color: 'white',
   },
 });

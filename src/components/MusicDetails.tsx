@@ -11,13 +11,12 @@ export default function MusicDetails() {
         style={{marginRight: 10}}
         color={'white'}
       />
-      <Text style={[styles.text, {color: 'white'}]}>
+      {/* <Text style={[styles.text, {color: 'white'}]}>
         Roddy Roundicch - The Round Table{' '}
-      </Text>
-      {/* <Marquee
-        text="I got no rule - Dua LipaI got no rule - Dua LipaI got no rule - Dua Lipa"
-        duration={1000}
-      /> */}
+      </Text> */}
+      <View style={styles.marqueebox}>
+        <Marquee text=" Roddy Roundicch - The Round Table" />
+      </View>
     </View>
   );
 }
@@ -38,5 +37,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 16,
     height: '100%',
+  },
+  marqueebox: {
+    width: '80%',
+    overflow: 'hidden',
   },
 });
